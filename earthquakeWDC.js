@@ -3,19 +3,37 @@
 
     myConnector.getSchema = function (schemaCallback) {
         var cols = [{
-            id: "id",
+            id: "country",
             dataType: tableau.dataTypeEnum.string
         }, {
-            id: "mag",
-            alias: "magnitude",
-            dataType: tableau.dataTypeEnum.float
-        }, {
-            id: "title",
-            alias: "title",
+            id: "countryCode",
             dataType: tableau.dataTypeEnum.string
         }, {
-            id: "location",
-            dataType: tableau.dataTypeEnum.geometry
+            id: "slug",
+            dataType: tableau.dataTypeEnum.string
+        },{
+            id: "newConfirmed",
+            alias: "new confirmed cases",
+            dataType: tableau.dataTypeEnum.int
+        }, {
+            id: "totalConfirmed",
+            alias: "total confirmed cases",
+            dataType: tableau.dataTypeEnum.int
+        }, {
+            id: "newDeaths",
+            dataType: tableau.dataTypeEnum.int
+        }, {
+            id: "totalDeaths",
+            dataType: tableau.dataTypeEnum.int
+        }, {
+            id: "newRecovered",
+            dataType: tableau.dataTypeEnum.int
+        }, {
+            id: "totalRecovered",
+            dataType: tableau.dataTypeEnum.int
+        }, {
+            id: "date",
+            dataType: tableau.dataTypeEnum.datetime
         }];
     
         var tableSchema = {
@@ -28,17 +46,23 @@
     };
 
     myConnector.getData = function(table, doneCallback) {
-        $.getJSON("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson", function(resp) {
+        $.getJSON("https://api.covid19api.com/summary", function(resp) {
             var feat = resp.features,
                 tableData = [];
     
             // Iterate over the JSON object
-            for (var i = 0, len = feat.length; i < len; i++) {
+            for (var i = 1, len = feat.length; i < len; i++) {
                 tableData.push({
-                    "id": feat[i].id,
-                    "mag": feat[i].properties.mag,
-                    "title": feat[i].properties.title,
-                    "location": feat[i].geometry
+                    "country": feat[i].Country,
+                    "countryCode": feat[i].properties.CountryCode,
+                    "slug": feat[i].properties.Slug,
+                    "newConfirmed": feat[i].properties.NewConfirmed,
+                    "totalConfirmed": feat[i].properties.TotalConfirmed,
+                    "newDeaths": feat[i].properties.NewDeaths,
+                    "totalDeaths": feat[i].properties.TotalDeaths,
+                    "newRecovered": feat[i].properties.NewRecovered,
+                    "totalRecovered": feat[i].properties.TotalRecovered,
+                    "date": feat[i].properties.Date,
                 });
             }
     
@@ -51,7 +75,7 @@
 
     $(document).ready(function () {
         $("#submitButton").click(function () {
-            tableau.connectionName = "USGS Earthquake Feed";
+            tableau.connectionName = "Covid Data";
             tableau.submit();
         });
     });
