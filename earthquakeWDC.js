@@ -47,22 +47,22 @@
 
     myConnector.getData = function(table, doneCallback) {
         $.getJSON("https://api.covid19api.com/summary", function(resp) {
-            var feat = resp.features,
+            var feat = resp.Countries,
                 tableData = [];
     
             // Iterate over the JSON object
             for (var i = 1, len = feat.length; i < len; i++) {
                 tableData.push({
                     "country": feat[i].Country,
-                    "countryCode": feat[i].properties.CountryCode,
-                    "slug": feat[i].properties.Slug,
-                    "newConfirmed": feat[i].properties.NewConfirmed,
-                    "totalConfirmed": feat[i].properties.TotalConfirmed,
-                    "newDeaths": feat[i].properties.NewDeaths,
-                    "totalDeaths": feat[i].properties.TotalDeaths,
-                    "newRecovered": feat[i].properties.NewRecovered,
-                    "totalRecovered": feat[i].properties.TotalRecovered,
-                    "date": feat[i].properties.Date,
+                    "countryCode": feat[i].CountryCode,
+                    "slug": feat[i].Slug,
+                    "newConfirmed": feat[i].NewConfirmed,
+                    "totalConfirmed": feat[i].TotalConfirmed,
+                    "newDeaths": feat[i].NewDeaths,
+                    "totalDeaths": feat[i].TotalDeaths,
+                    "newRecovered": feat[i].NewRecovered,
+                    "totalRecovered": feat[i].TotalRecovered,
+                    "date": feat[i].Date,
                 });
             }
     
